@@ -1,0 +1,25 @@
+{
+  "name": "poc-playwright-webmcp",
+  "version": "0.1.0",
+  "description": "PoC: testing WebMCP tools with Playwright page.webmcp",
+  "scripts": {
+    "test": "playwright test",
+    "bench": "node src/bench.mjs",
+    "bench:quick": "N=5 OUT=/tmp/webmcp-quick node src/bench.mjs",
+    "install:browser": "playwright install chromium"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qa-gary-parker/poc-playwright-webmcp.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/qa-gary-parker/poc-playwright-webmcp/issues"
+  },
+  "homepage": "https://github.com/qa-gary-parker/poc-playwright-webmcp#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.65.1"
+  },
+  "private": true
+}
