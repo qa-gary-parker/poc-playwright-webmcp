@@ -1,0 +1,320 @@
+{
+  "info": {
+    "playwright": "1.65.1",
+    "chromium": "159.0.8154.6",
+    "node": "v24.14.1",
+    "N": 50,
+    "platform": "darwin"
+  },
+  "e1": {
+    "ui_v1/webmcp": {
+      "runs": 50,
+      "passed": 50,
+      "pass_rate": 1,
+      "steps": 6,
+      "task": {
+        "n": 50,
+        "median_ms": 9.64,
+        "p95_ms": 10.63,
+        "max_ms": 11.51
+      },
+      "goto": {
+        "n": 50,
+        "median_ms": 7.45,
+        "p95_ms": 8.61,
+        "max_ms": 10.07
+      },
+      "errors": []
+    },
+    "ui_v1/dom": {
+      "runs": 50,
+      "passed": 50,
+      "pass_rate": 1,
+      "steps": 8,
+      "task": {
+        "n": 50,
+        "median_ms": 134.77,
+        "p95_ms": 150.8,
+        "max_ms": 152.49
+      },
+      "goto": {
+        "n": 50,
+        "median_ms": 8.02,
+        "p95_ms": 8.72,
+        "max_ms": 10.91
+      },
+      "errors": []
+    },
+    "ui_v2/webmcp": {
+      "runs": 50,
+      "passed": 50,
+      "pass_rate": 1,
+      "steps": 6,
+      "task": {
+        "n": 50,
+        "median_ms": 9.12,
+        "p95_ms": 9.93,
+        "max_ms": 10.1
+      },
+      "goto": {
+        "n": 50,
+        "median_ms": 7.18,
+        "p95_ms": 8.01,
+        "max_ms": 8.27
+      },
+      "errors": []
+    },
+    "ui_v2/dom": {
+      "runs": 50,
+      "passed": 0,
+      "pass_rate": 0,
+      "steps": null,
+      "task": {
+        "n": 50,
+        "median_ms": 1001.05,
+        "p95_ms": 1002.51,
+        "max_ms": 1004.11
+      },
+      "goto": {
+        "n": 50,
+        "median_ms": 9.05,
+        "p95_ms": 10.53,
+        "max_ms": 10.93
+      },
+      "errors": [
+        "locator.fill: Timeout 1000ms exceeded."
+      ]
+    }
+  },
+  "e2": {
+    "late_0ms": {
+      "runs": 50,
+      "immediate_pass_rate": 1,
+      "polling_pass_rate": 1,
+      "poll_ready": {
+        "n": 50,
+        "median_ms": 3.15,
+        "p95_ms": 3.69,
+        "max_ms": 4.24
+      }
+    },
+    "late_50ms": {
+      "runs": 50,
+      "immediate_pass_rate": 0,
+      "polling_pass_rate": 1,
+      "poll_ready": {
+        "n": 50,
+        "median_ms": 59.12,
+        "p95_ms": 62.06,
+        "max_ms": 62.21
+      }
+    },
+    "late_200ms": {
+      "runs": 50,
+      "immediate_pass_rate": 0,
+      "polling_pass_rate": 1,
+      "poll_ready": {
+        "n": 50,
+        "median_ms": 209.21,
+        "p95_ms": 217.91,
+        "max_ms": 220.84
+      }
+    },
+    "late_1000ms": {
+      "runs": 50,
+      "immediate_pass_rate": 0,
+      "polling_pass_rate": 1,
+      "poll_ready": {
+        "n": 50,
+        "median_ms": 1008.5,
+        "p95_ms": 1016.44,
+        "max_ms": 1018.04
+      }
+    }
+  },
+  "e3": {
+    "valid_call": {
+      "runs": 50,
+      "outcomes": {
+        "returned_result": 50
+      },
+      "example_detail": "{\"content\":[{\"type\":\"text\",\"text\":\"{\\\"lines\\\":[{\\\"sku\\\":\\\"SKU-1\\\",\\\"qty\\\":1,\\\"subtotal\\\":6}],\\\"total\\\":6}\"}]}",
+      "call": {
+        "n": 50,
+        "median_ms": 3.99,
+        "p95_ms": 4.99,
+        "max_ms": 5.03
+      }
+    },
+    "wrong_type_qty_string": {
+      "runs": 50,
+      "outcomes": {
+        "returned_isError": 50
+      },
+      "example_detail": "{\"isError\":true,\"content\":[{\"type\":\"text\",\"text\":\"qty must be a positive integer\"}]}",
+      "call": {
+        "n": 50,
+        "median_ms": 3.83,
+        "p95_ms": 4.16,
+        "max_ms": 4.92
+      }
+    },
+    "missing_required_qty": {
+      "runs": 50,
+      "outcomes": {
+        "returned_isError": 50
+      },
+      "example_detail": "{\"isError\":true,\"content\":[{\"type\":\"text\",\"text\":\"qty must be a positive integer\"}]}",
+      "call": {
+        "n": 50,
+        "median_ms": 3.83,
+        "p95_ms": 3.96,
+        "max_ms": 4.04
+      }
+    },
+    "non_integer_qty": {
+      "runs": 50,
+      "outcomes": {
+        "returned_isError": 50
+      },
+      "example_detail": "{\"isError\":true,\"content\":[{\"type\":\"text\",\"text\":\"qty must be a positive integer\"}]}",
+      "call": {
+        "n": 50,
+        "median_ms": 3.91,
+        "p95_ms": 4.96,
+        "max_ms": 6.03
+      }
+    },
+    "schema_valid_echo": {
+      "runs": 50,
+      "outcomes": {
+        "returned_result": 50
+      },
+      "example_detail": "{\"content\":[{\"type\":\"text\",\"text\":\"{\\\"type\\\":\\\"number\\\",\\\"value\\\":3,\\\"keys\\\":[\\\"qty\\\"]}\"}]}",
+      "call": {
+        "n": 50,
+        "median_ms": 3.97,
+        "p95_ms": 4.93,
+        "max_ms": 5.12
+      }
+    },
+    "schema_wrong_type_echo": {
+      "runs": 50,
+      "outcomes": {
+        "returned_result": 50
+      },
+      "example_detail": "{\"content\":[{\"type\":\"text\",\"text\":\"{\\\"type\\\":\\\"string\\\",\\\"value\\\":\\\"3\\\",\\\"keys\\\":[\\\"qty\\\"]}\"}]}",
+      "call": {
+        "n": 50,
+        "median_ms": 4,
+        "p95_ms": 4.24,
+        "max_ms": 4.42
+      }
+    },
+    "schema_below_minimum_echo": {
+      "runs": 50,
+      "outcomes": {
+        "returned_result": 50
+      },
+      "example_detail": "{\"content\":[{\"type\":\"text\",\"text\":\"{\\\"type\\\":\\\"number\\\",\\\"value\\\":0,\\\"keys\\\":[\\\"qty\\\"]}\"}]}",
+      "call": {
+        "n": 50,
+        "median_ms": 4.03,
+        "p95_ms": 4.44,
+        "max_ms": 5.01
+      }
+    },
+    "schema_missing_required_echo": {
+      "runs": 50,
+      "outcomes": {
+        "returned_result": 50
+      },
+      "example_detail": "{\"content\":[{\"type\":\"text\",\"text\":\"{\\\"type\\\":\\\"undefined\\\",\\\"value\\\":null,\\\"keys\\\":[]}\"}]}",
+      "call": {
+        "n": 50,
+        "median_ms": 3.84,
+        "p95_ms": 4.85,
+        "max_ms": 4.95
+      }
+    },
+    "schema_extra_property_echo": {
+      "runs": 50,
+      "outcomes": {
+        "returned_result": 50
+      },
+      "example_detail": "{\"content\":[{\"type\":\"text\",\"text\":\"{\\\"type\\\":\\\"number\\\",\\\"value\\\":3,\\\"keys\\\":[\\\"qty\\\",\\\"extra\\\"]}\"}]}",
+      "call": {
+        "n": 50,
+        "median_ms": 3.84,
+        "p95_ms": 4.05,
+        "max_ms": 4.13
+      }
+    },
+    "unknown_sku_page_isError": {
+      "runs": 50,
+      "outcomes": {
+        "returned_isError": 50
+      },
+      "example_detail": "{\"isError\":true,\"content\":[{\"type\":\"text\",\"text\":\"Unknown sku NOPE\"}]}",
+      "call": {
+        "n": 50,
+        "median_ms": 3.91,
+        "p95_ms": 4.86,
+        "max_ms": 5.06
+      }
+    },
+    "unknown_tool": {
+      "runs": 50,
+      "outcomes": {
+        "threw": 50
+      },
+      "example_detail": "webMCP.callTool: No WebMCP tool named \"does_not_exist\". Available tools: add_to_cart, boom, checkout, echo_qty, get_cart, hang, search_products.",
+      "call": {
+        "n": 50,
+        "median_ms": 3.22,
+        "p95_ms": 4.19,
+        "max_ms": 4.27
+      }
+    },
+    "tool_throws": {
+      "runs": 50,
+      "outcomes": {
+        "threw": 50
+      },
+      "example_detail": "webMCP.callTool: OperationError: Tool execution failed.",
+      "call": {
+        "n": 50,
+        "median_ms": 4.04,
+        "p95_ms": 4.23,
+        "max_ms": 4.31
+      }
+    },
+    "tool_hangs_500ms_timeout": {
+      "runs": 50,
+      "outcomes": {
+        "threw": 50
+      },
+      "example_detail": "webMCP.callTool: Timeout 500ms exceeded.",
+      "call": {
+        "n": 50,
+        "median_ms": 500.13,
+        "p95_ms": 501.61,
+        "max_ms": 501.88
+      }
+    },
+    "no_flag": {
+      "runs": 50,
+      "outcomes": {
+        "threw": 50
+      },
+      "example_detail": "webMCP.tools: WebMCP is not enabled. Launch the browser with the \"--enable-features=WebMCP\" argument."
+    },
+    "page_registers_no_tools": {
+      "runs": 50,
+      "outcomes": {
+        "returned_result": 50
+      },
+      "example_detail": "tools=0"
+    }
+  }
+}
