@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Tiny shop</title></head>
+<body>
+<h1>Tiny shop</h1>
+<div id="ui"></div>
+<script>
+const params = new URLSearchParams(location.search);
+const variant = params.get('v') || '1';          // 1 = original UI, 2 = renamed ids and labels
+const lateMs = Number(params.get('late') || 0);  // register WebMCP tools this many ms after load
+const noTools = params.get('tools') === '0';
+
+const CATALOGUE = [
+  { sku: 'SKU-1', name: 'Blue notebook', price: 6 },
+  { sku: 'SKU-2', name: 'Enamel mug', price: 12 },
+  { sku: 'SKU-3', name: 'Travel mug', price: 18 },
+  { sku: 'SKU-4', name: 'Desk lamp', price: 30 },
+  { sku: 'SKU-5', name: 'Sticker pack', price: 3 },
+];
+const cart = {};
+window.__cart = cart;
+window.__orders = [];
+
+function search(query) {
+  const q = String(query || '').toLowerCase();
+  return CATALOGUE.filter(p => p.name.toLowerCase().includes(q));
+}
+function addToCart(sku, qty) {
+  const p = CATALOGUE.find(x => x.sku === sku);
+  if (!p) throw new Error('Unknown sku ' + sku);
+  cart[sku] = (cart[sku] || 0) + qty;
+  render();
+  return cartView();
+}
+function cartView() {
+  const lines = Object.entries(cart).map(([sku, qty]) => ({ sku, qty, subtotal: qty * CATALOGUE.find(x => x.sku === sku).price }));
+  return { lines, total: lines.reduce((a, l) => a + l.subtotal, 0) };
+}
+function checkout() {
+  const v = cartView();
+  window.__orders.push(v);
+  for (const k of Object.keys(cart)) delete cart[k];
+  render();
+  return { orderId: window.__orders.length, total: v.total };
+}
+
+// ---- DOM UI. Variant 2 renames every test id and label. ----
+const ids = variant === '2'
+  ? { input: 'q', go: 'go', add: s => 'buy-' + s, qty: s => 'n-' + s, total: 'sum', checkout: 'pay', goLabel: 'Find', addLabel: 'Buy' }
+  : { input: 'search-input', go: 'search-btn', add: s => 'add-' + s, qty: s => 'qty-' + s, total: 'cart-total', checkout: 'checkout-btn', goLabel: 'Search', addLabel: 'Add to cart' };
+let results = [];
+function render() {
+  const ui = document.getElementById('ui');
+  ui.innerHTML = '';
+  const input = Object.assign(document.createElement('input'), { placeholder: 'Search products' });
+  input.dataset.testid = ids.input;
+  const go = Object.assign(document.createElement('button'), { textContent: ids.goLabel });
+  go.dataset.testid = ids.go;
+  go.onclick = () => { results = search(input.value); render(); document.querySelector('[data-testid=' + ids.input + ']').value = input.value; };
+  ui.append(input, go);
+  const ul = document.createElement('ul');
+  for (const p of results) {
+    const li = document.createElement('li');
+    li.append(p.name + ' (' + p.price + ') ');
+    const qty = Object.assign(document.createElement('input'), { type: 'number', value: 1 });
+    qty.dataset.testid = ids.qty(p.sku);
+    const add = Object.assign(document.createElement('button'), { textContent: ids.addLabel });
+    add.dataset.testid = ids.add(p.sku);
+    add.onclick = () => addToCart(p.sku, Number(qty.value));
+    li.append(qty, add);
+    ul.append(li);
+  }
+  ui.append(ul);
+  const total = document.createElement('p');
+  total.dataset.testid = ids.total;
+  total.textContent = String(cartView().total);
+  const co = Object.assign(document.createElement('button'), { textContent: 'Checkout' });
+  co.dataset.testid = ids.checkout;
+  co.onclick = () => checkout();
+  ui.append(total, co);
+}
+render();
+
+// ---- WebMCP tools ----
+const text = obj => ({ content: [{ type: 'text', text: JSON.stringify(obj) }] });
+function registerTools() {
+  const mc = document.modelContext || navigator.modelContext;
+  if (!mc) { window.__webmcpMissing = true; return; }
+  mc.registerTool({
+    name: 'search_products', description: 'Search the catalogue by name.',
+    inputSchema: { type: 'object', properties: { query: { type: 'string' } }, required: ['query'] },
+    annotations: { readOnlyHint: true },
+    execute: async ({ query }) => text(search(query)),
+  });
+  mc.registerTool({
+    name: 'add_to_cart', description: 'Add a quantity of a product to the cart.',
+    inputSchema: { type: 'object', properties: { sku: { type: 'string' }, qty: { type: 'integer', minimum: 1 } }, required: ['sku', 'qty'] },
+    execute: async ({ sku, qty }) => {
+      if (!Number.isInteger(qty) || qty < 1) return { isError: true, content: [{ type: 'text', text: 'qty must be a positive integer' }] };
+      try { return text(addToCart(sku, qty)); } catch (e) { return { isError: true, content: [{ type: 'text', text: e.message }] }; }
+    },
+  });
+  mc.registerTool({
+    name: 'get_cart', description: 'Return the cart lines and total.',
+    inputSchema: { type: 'object', properties: {} }, annotations: { readOnlyHint: true },
+    execute: async () => text(cartView()),
+  });
+  mc.registerTool({
+    name: 'checkout', description: 'Place the order for the current cart.',
+    inputSchema: { type: 'object', properties: {} }, annotations: { consequentialHint: true },
+    execute: async () => text(checkout()),
+  });
+  // Deliberately awkward tools, used by the failure-mode tests.
+  mc.registerTool({
+    name: 'echo_qty', description: 'Returns the type and value of qty exactly as received. No page-side validation.',
+    inputSchema: { type: 'object', properties: { qty: { type: 'integer', minimum: 1 } }, required: ['qty'], additionalProperties: false },
+    execute: async (input) => text({ type: typeof input.qty, value: input.qty ?? null, keys: Object.keys(input) }),
+  });
+  mc.registerTool({ name: 'boom', description: 'Always throws.', inputSchema: { type: 'object', properties: {} }, execute: async () => { throw new Error('boom'); } });
+  mc.registerTool({ name: 'hang', description: 'Never resolves.', inputSchema: { type: 'object', properties: {} }, execute: () => new Promise(() => {}) });
+  window.__toolsRegisteredAt = performance.now();
+}
+if (!noTools) { if (lateMs > 0) setTimeout(registerTools, lateMs); else registerTools(); }
+</script>
+</body>
+</html>
