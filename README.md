@@ -44,7 +44,7 @@ Tools registered after load (`results/e2_late_registration.csv`):
 
 Failure modes (`results/e3_failure_modes.csv`, 50 runs each, outcome identical in all 50):
 
-- **No schema enforcement.** `echo_qty` declares `qty` as an integer with minimum 1, required, no extra properties. Through `page.webmcp.callTool`, `\{qty: "3"\}`, `\{qty: 0\}`, `\{\}` and an extra property all reached the page's `execute` function unchanged and returned normally. The page has to validate its own input.
+- **No schema enforcement.** `echo_qty` declares `qty` as an integer with minimum 1, required, no extra properties. Through `page.webmcp.callTool`, `{qty: "3"}`, `{qty: 0}`, `{}` and an extra property all reached the page's `execute` function unchanged and returned normally. The page has to validate its own input.
 - **Page-reported errors** (`isError: true`) come back as a normal result, not an exception. A test must check `result.isError`.
 - **Unknown tool**: throws, and the message lists the available tools.
 - **Tool that throws**: throws `OperationError: Tool execution failed.` The original message ("boom") is not included.
