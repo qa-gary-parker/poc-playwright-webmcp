@@ -371,7 +371,7 @@ const steps: Step[] = [
   },
   {
     cap: 'Way 2, the DOM: 8 actions with getByTestId',
-    say: 'The second way drives the UI, with get by test ID. Fill the search box, click search, set the quantity, click add. Eight actions in all.',
+    say: 'The second way drives the UI, with get by test ID. Fill the search box, click search, set the quantity, click add, then read the total. Eight actions in all.',
     act: async (S, page) => {
       await S('clear');
       await S('term', 'd', 'src/tasks.mjs · viaDOM', 'blue');
