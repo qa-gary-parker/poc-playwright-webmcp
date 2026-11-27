@@ -74,3 +74,12 @@ CI runs the tests and the N=50 benchmark and uploads the results as an artifact.
 ## Licence
 
 MIT.
+
+<!-- links:start -->
+## Links
+
+- Write-up: [Playwright WebMCP: Calls Pass 50 of 50, First Read Misses Late Tools](https://garyparker.dev/blog/playwright-webmcp)
+- Video: [youtu.be/n3WWeNLxZds](https://youtu.be/n3WWeNLxZds)
+- More experiments: [garyparker.dev/measured](https://garyparker.dev/measured)
+- Newsletter: [garyparker.dev/newsletter](https://garyparker.dev/newsletter)
+<!-- links:end -->
